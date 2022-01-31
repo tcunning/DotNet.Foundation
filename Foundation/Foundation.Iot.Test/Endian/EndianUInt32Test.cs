@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using Foundation.Iot.Collection;
+﻿using Foundation.Iot.Collection;
 using Foundation.Iot.Endian;
 
 namespace Foundation.Iot.Test.Endian;
