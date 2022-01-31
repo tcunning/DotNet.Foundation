@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Foundation.Iot.Collection;
 
 namespace Foundation.Iot.Endian;
@@ -22,6 +23,8 @@ namespace Foundation.Iot.Endian;
 /// <para>
 /// Operations that cause arrays or lists to be create will cause heap allocation such as <see cref="ToArray"/> and <see cref="ToList"/>. 
 /// </para>
+/// <para>There are also several extension methods, <see cref="EndianUInt32Extension"/> that make this "easier" to use for
+/// common use cases such as converting values to/from buffers in the desired <see cref="EndianFormat"/>.</para>
 /// </summary>
 public readonly ref struct EndianUInt32 
 {
@@ -78,7 +81,8 @@ public readonly ref struct EndianUInt32
     /// <summary>
     /// <para>
     /// This constructor takes an ArraySegment which must contain exactly, no more and no less, the expected number of
-    /// bytes <see cref="Count"/> need to convert it the <see cref="Value"/> without using any heap memory.
+    /// bytes <see cref="Count"/> needed to convert it to <see cref="Value"/>, and it does this without allocating any
+    /// heap memory.
     /// </para>
     /// <para>
     /// This is a ref struct so it will never be on the heap and the lifetime of this struct is expected to be short,
@@ -88,18 +92,21 @@ public readonly ref struct EndianUInt32
     /// <param name="buffer">An ArraySegment which must contain exactly the expected number of bytes <see cref="Count"/>
     /// needed by the value.  Anything that can be converted into an ArraySegment can also be used such as a byte array, but
     /// it too must exactly match the expected numbers of bytes <see cref="Count"/>.</param>
-    /// <param name="endianFormat"></param>
+    /// <param name="endianFormat">The endian format to use when converting from the buffer to the value</param>
     public EndianUInt32(ArraySegment<byte> buffer, EndianFormat endianFormat) : this(MakeValue(buffer, endianFormat), endianFormat)
     {
     }
 
     /// <summary>
-    /// 
+    /// <para>
+    /// Takes an ArraySegment which must contain exactly, no more and no less, the expected number of bytes needed to convert it to
+    /// the returned value, and it does this without allocating any heap memory.
+    /// </para>
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="endianFormat"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="buffer">An ArraySegment which must contain exactly the expected number of bytes need to convert it to the
+    /// returned value.  Anything that can be converted into an ArraySegment can also be used such as a byte array, but
+    /// it too must exactly match the expected numbers of bytes.</param>
+    /// <param name="endianFormat">The endian format to use when converting from the buffer to the value</param>
     public static UInt32 MakeValue(ArraySegment<byte> buffer, EndianFormat endianFormat)
     {
         if (buffer.Count != EndianValueManipulation<UInt32>.NumberOfBytes)
@@ -113,13 +120,46 @@ public readonly ref struct EndianUInt32
         return value;
     }
 
+    /// <summary>
+    /// Converts the <see cref="Value"/> to an array of bytes using the <see cref="EndianFormat"/>.  This will cause a heap allocation
+    /// as a new array is created.
+    /// </summary>
+    /// <returns>The <see cref="Value"/> converted to an array of bytes in <see cref="EndianFormat"/></returns>
     public byte[] ToArray() => GetEnumerator().ToArray();
 
+    /// <summary>
+    /// Converts the <see cref="Value"/> to <see cref="List{T}"/> of bytes using the <see cref="EndianFormat"/>.  This will cause a heap allocation
+    /// as a new list is created.
+    /// </summary>
+    /// <returns>The <see cref="Value"/> converted to a <see cref="List{T}"/> of bytes in <see cref="EndianFormat"/></returns>
     public List<byte> ToList() => GetEnumerator().ToList();
 
+    /// <summary>
+    /// Copies the <see cref="Value"/> to the given <see cref="destinationArray"/> using the <see cref="EndianFormat"/>, and it does
+    /// this without allocating any heap memory. 
+    /// </summary>
+    /// <param name="sourceStartIndex">The source index this can be 0 to the size of the <see cref="Value"/></param>
+    /// <param name="destinationArray">The array to copy the value into after taking into account the <see cref="EndianFormat"/></param>
+    /// <param name="destinationStartIndex">Index in the destination buffer were the copy should be started</param>
+    /// <param name="count">From 0 to the size of the <see cref="Value"/> but can't exceed the source buffer size while also taking
+    /// into account the <see cref="sourceStartIndex"/></param>
     public void CopyTo(int sourceStartIndex, byte[] destinationArray, int destinationStartIndex, int count) => GetEnumerator().CopyTo(sourceStartIndex, destinationArray, destinationStartIndex, count);
 
+    /// <summary>
+    /// Copies the <see cref="Value"/> to the given <see cref="destinationArray"/> using the <see cref="EndianFormat"/>, and it does
+    /// this without allocating any heap memory. There must be enough room in the <see cref="destinationArray"/> to hold the entire
+    /// value.
+    /// </summary>
+    /// <param name="destinationArray">The array to copy the value into after taking into account the <see cref="EndianFormat"/></param>
+    /// <param name="destinationStartIndex">Index in the destination buffer were the copy should be started</param>
     public void CopyTo(byte[] destinationArray, int destinationStartIndex = 0) => GetEnumerator().CopyTo(destinationArray, destinationStartIndex);
-    
+
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection without allocating additional heap.  We explicitly return a
+    /// struct so we can avoid the boxing overhead of using an <see cref="IEnumerable{T}"/> interface.  The <see cref="GetEnumerator"/>
+    /// is used by C#'s foreach statement via what is know as Duck Typing.  Even without an interface, C# will look for a method named
+    /// <see cref="GetEnumerator"/> to perform the iterating.
+    /// </summary>
+    /// <returns>A struct that conforms to <see cref="IEnumerator{T}"/> that iterates over the data taking into account the <see cref="EndianFormat"/></returns>
     public EnumeratorBuilderForFour<byte> GetEnumerator() => new (this[0], this[1], this[2], this[3]);
 }

@@ -202,6 +202,5 @@ public class EndianUInt32Test
         endianBuffer[3].ShouldBe(valueBuffer[3]);
 
         valueBuffer.AsUInt32(endianFormat).ShouldBe(value);
-        valueBuffer.AsUInt32(0, endianFormat).ShouldBe(value);
     }
 }

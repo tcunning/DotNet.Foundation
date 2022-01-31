@@ -176,6 +176,5 @@ public class EndianUInt16Test
         endianBuffer[1].ShouldBe(valueBuffer[1]);
 
         valueBuffer.AsUInt16(endianFormat).ShouldBe(value);
-        valueBuffer.AsUInt16(0, endianFormat).ShouldBe(value);
     }
 }
