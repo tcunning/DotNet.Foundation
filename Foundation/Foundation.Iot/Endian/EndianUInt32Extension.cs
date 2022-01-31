@@ -18,8 +18,8 @@ public static class EndianUInt32Extension
     /// </code>
     /// </example>
     /// </summary>
-    /// <param name="value"></param>
-    /// <param name="endianFormat"></param>
+    /// <param name="value">The value to use for endian value, this will of course be in the native endian format</param>
+    /// <param name="endianFormat">The endian format that should be used when going to/from memory</param>
     /// <returns>The <see cref="EndianUInt32"/> that can format the value as the given <see cref="EndianFormat"/></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static EndianUInt32 AsEndianUInt32(this UInt32 value, EndianFormat endianFormat) =>
