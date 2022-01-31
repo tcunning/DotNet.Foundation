@@ -21,7 +21,7 @@ public enum EndianFormat
     ///     a+3:    0x78  
     /// </code>
     /// </summary>
-    Big,
+    Big = 0,
 
     /// <summary>
     /// A little-endian system stores the least-significant byte at the smallest address and the most significant byte at the largest.
@@ -37,5 +37,5 @@ public enum EndianFormat
     ///     a+3:     0x12
     /// </code>
     /// </summary>
-    Little
+    Little = 1
 }

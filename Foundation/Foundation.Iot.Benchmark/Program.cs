@@ -48,8 +48,13 @@ void Test2B()
 
 void Test3()
 {
-    UInt16 testValue = 0x1234;
-    var testValueDump = testValue.AsEndian(EndianFormat.Little);
+    var buffer = new byte[16];
+
+    UInt32 testValue = 0x12345678;
+    var testValueDump = testValue.AsEndian(EndianFormat.Big);
     Console.WriteLine($"{testValue:X} = {testValueDump[0]:X}, {testValueDump[1]:X}");
-    testValueDump.ToList().ForEach(x => Console.WriteLine($"{x:X}"));
+    testValueDump.CopyTo(2, buffer, 4, 2);
+    if( buffer[4] != 0x56 || buffer[5] != 0x78 )
+        Console.WriteLine($"Buffer Check Failed {buffer[4]:X}/{buffer[5]:X}");
+
 }

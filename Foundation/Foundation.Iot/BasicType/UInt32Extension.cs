@@ -46,8 +46,7 @@ public static class UInt32Extension
     public static ReadOnlyListUInt32 AsList(this UInt32 value, EndianFormat endianFormat = EndianFormat.Big) => new ReadOnlyListUInt32(value, endianFormat);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Endian<UInt32> AsEndian(this UInt32 value, EndianFormat endianFormat = EndianFormat.Big) => 
-        new Endian<UInt32>(value, endianFormat, (val, numBits) => (byte)(val >> numBits));
+    public static EndianUInt32 AsEndian(this UInt32 value, EndianFormat endianFormat = EndianFormat.Big) => new EndianUInt32(value, endianFormat);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Endian<UInt16> AsEndian(this UInt16 value, EndianFormat endianFormat = EndianFormat.Big) =>
