@@ -159,5 +159,5 @@ public readonly ref struct EndianUInt32
     /// <see cref="GetEnumerator"/> to perform the iterating.
     /// </summary>
     /// <returns>A struct that conforms to <see cref="IEnumerator{T}"/> that iterates over the data taking into account the <see cref="EndianFormat"/></returns>
-    public EnumeratorBuilderForFour<byte> GetEnumerator() => new (this[0], this[1], this[2], this[3]);
+    public EnumeratorForFour<byte> GetEnumerator() => new (this[0], this[1], this[2], this[3]);
 }

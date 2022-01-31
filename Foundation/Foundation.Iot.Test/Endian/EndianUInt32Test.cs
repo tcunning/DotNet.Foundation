@@ -222,7 +222,7 @@ public class EndianUInt32Test
     public void EnumeratorBuilderTest()
     {
         Should.Throw<InvalidOperationException>(() => {
-            var builder = new EnumeratorBuilderForFour<UInt32>();
+            var builder = new EnumeratorForFour<UInt32>();
             builder.CurrentValueForIndex(sizeof(UInt32));
         });
     }

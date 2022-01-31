@@ -192,7 +192,7 @@ public class EndianUInt16Test
     public void EnumeratorBuilderTest()
     {
         Should.Throw<InvalidOperationException>(() => {
-            var builder = new EnumeratorBuilderForTwo<UInt16>();
+            var builder = new EnumeratorForTwo<UInt16>();
             builder.CurrentValueForIndex(sizeof(UInt16));
         });
     }
