@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Foundation.Iot.Endian;
+﻿namespace Foundation.Iot.Endian;
 
 /// <summary>
 /// Provides several extension methods that make this "easier" to convert values to/from buffers

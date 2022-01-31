@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using Foundation.Iot.BasicType;
+﻿using Foundation.Iot.BasicType;
 
 namespace Foundation.Iot.Endian;
+
 /// <summary>
 /// Used to assist with Endian Value Manipulations. The given <see cref="TValue"/> should be
 /// an integer type such as int, long, UInt16, ...
