@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using Foundation.Iot.Collection;
 using Foundation.Iot.Endian;
 
 namespace Foundation.Iot.Test.Endian;
@@ -176,5 +177,26 @@ public class EndianUInt16Test
         endianBuffer[1].ShouldBe(valueBuffer[1]);
 
         valueBuffer.AsUInt16(endianFormat).ShouldBe(value);
+
+        var buffer = new byte[20];
+        Array.Fill(buffer, (byte)0xFF);
+        value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(UInt16));
+        buffer[1].ShouldBe(valueBuffer[0]);
+        buffer[2].ShouldBe(valueBuffer[1]);
+
+        Array.Fill(buffer, (byte)0xFF);
+        value.CopyToBuffer(endianFormat, buffer, 1);
+        buffer[1].ShouldBe(valueBuffer[0]);
+        buffer[2].ShouldBe(valueBuffer[1]);
     }
+
+    [TestMethod]
+    public void EnumeratorBuilderTest()
+    {
+        Should.Throw<InvalidOperationException>(() => {
+            var builder = new EnumeratorBuilderForTwo<UInt16>();
+            builder.CurrentValueForIndex(sizeof(UInt16));
+        });
+    }
+
 }

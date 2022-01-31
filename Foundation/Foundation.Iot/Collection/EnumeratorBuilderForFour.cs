@@ -23,19 +23,18 @@ public struct EnumeratorBuilderForFour<TValue> : IEnumerator<TValue>
 
     public void Reset() => _tracker.Reset();
 
-    public TValue Current
+    public TValue Current => CurrentValueForIndex(_tracker.CurrentIndex);
+
+    public TValue CurrentValueForIndex(int index)
     {
-        get
+        return index switch
         {
-            return _tracker.CurrentIndex switch
-            {
-                0 => _byte0,
-                1 => _byte1,
-                2 => _byte2,
-                3 => _byte3,
-                _ => throw new InvalidOperationException()
-            };
-        }
+            0 => _byte0,
+            1 => _byte1,
+            2 => _byte2,
+            3 => _byte3,
+            _ => throw new InvalidOperationException()
+        };
     }
 
     object IEnumerator.Current => Current;
