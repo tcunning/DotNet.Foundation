@@ -26,7 +26,7 @@ public class BenchmarkRun
     public void Test1B()
     {
         uint testValue = 0x12345678;
-        var testValueDump = new ReadOnlyListUInt32(testValue, EndianFormat.Little);
+        var testValueDump = new ReadOnlyListUInt32(testValue, Endian.Little);
         var ok = testValueDump[0] + testValueDump[1] + testValueDump[2] + testValueDump[3];
         //foreach (var value in testValueDump)
         //    ok -= value;
@@ -39,7 +39,7 @@ public class BenchmarkRun
     public void Test2A()
     {
         uint testValue = 0x12345678;
-        //var testValueDump = new Endian<uint>(testValue, EndianFormat.Big, (val, numBits) => (byte)(val >> numBits));
+        //var testValueDump = new Endian<uint>(testValue, Endian.Big, (val, numBits) => (byte)(val >> numBits));
         var testValueDump = new EndianUInt32(testValue, EndianFormat.Big);
         _ok = testValueDump[0] + testValueDump[1] + testValueDump[2] + testValueDump[3];
     }
@@ -70,7 +70,7 @@ public class BenchmarkRun
     public void Test2D()
     {
         uint testValue = 0x12345678;
-        //var testValueDump = new Endian<uint>(testValue, EndianFormat.Big, (val, numBits) => (byte)(val >> numBits));
+        //var testValueDump = new Endian<uint>(testValue, Endian.Big, (val, numBits) => (byte)(val >> numBits));
         var testValueDump = new EndianUInt32(testValue, EndianFormat.Big);
         testValueDump.CopyTo(_buffer, 0);
     }
