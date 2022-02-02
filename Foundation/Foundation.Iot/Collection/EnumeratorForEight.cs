@@ -150,6 +150,11 @@ public struct EnumeratorForEight<TValue> : IEnumerator<TValue>
 
         if( destinationStartIndex + count > destinationArray.Length)
             throw new ArgumentOutOfRangeException(nameof(count));
+
+        // todo: I Would like to do something like this and re-write the below logic to be more efficient.
+        //       However, this is not supported as of C#10.  This could be done with a byte but can't be
+        //       done via the Generic Parameter TValue
+        //Span<TValue> numbers = stackalloc TValue[] { _value0, _value1, _value2, _value3, _value4, _value5, _value6, _value7 };
         
         if (sourceStartIndex == 0 && count > 0) {
             destinationArray[destinationStartIndex] = _value0;
