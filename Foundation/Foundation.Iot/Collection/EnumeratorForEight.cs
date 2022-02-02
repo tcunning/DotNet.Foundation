@@ -13,10 +13,10 @@
 /// </para>
 /// </summary>
 /// <typeparam name="TValue">The value type that is being iterated over</typeparam>
-public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
+public struct EnumeratorForEight<TValue> : IEnumerator<TValue>
     where TValue : struct
 {
-    public const int Count = 4;
+    public const int Count = 8;
 
     private EnumeratorTracker _tracker;
 
@@ -24,21 +24,33 @@ public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
     private readonly TValue _value1;
     private readonly TValue _value2;
     private readonly TValue _value3;
+    private readonly TValue _value4;
+    private readonly TValue _value5;
+    private readonly TValue _value6;
+    private readonly TValue _value7;
 
     /// <summary>
     /// Creates the enumerator for the give values
     /// </summary>
     /// <param name="value0">The 1st value to return</param>
     /// <param name="value1">The 2nd value to return</param>
-    /// <param name="value2">The 4th value to return</param>
-    /// <param name="value3">The 5th value to return</param>
-    public EnumeratorForFour(TValue value0, TValue value1, TValue value2, TValue value3)
+    /// <param name="value2">The 3th value to return</param>
+    /// <param name="value3">The 4th value to return</param>
+    /// <param name="value4">The 5th value to return</param>
+    /// <param name="value5">The 6th value to return</param>
+    /// <param name="value6">The 7th value to return</param>
+    /// <param name="value7">The 8th value to return</param>
+    public EnumeratorForEight(TValue value0, TValue value1, TValue value2, TValue value3, TValue value4, TValue value5, TValue value6, TValue value7)
     {
         _tracker = new EnumeratorTracker(Count);
         _value0 = value0;
         _value1 = value1;
         _value2 = value2;
         _value3 = value3;
+        _value4 = value4;
+        _value5 = value5;
+        _value6 = value6;
+        _value7 = value7;
     }
 
     /// <summary>
@@ -73,6 +85,10 @@ public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
             1 => _value1,
             2 => _value2,
             3 => _value3,
+            4 => _value4,
+            5 => _value5,
+            6 => _value6,
+            7 => _value7,
             _ => throw new InvalidOperationException()
         };
     }
@@ -88,13 +104,13 @@ public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
     /// Create a new array with all values
     /// </summary>
     /// <returns>Array with all values</returns>
-    public TValue[] ToArray() => new[] {_value0, _value1, _value2, _value3};
+    public TValue[] ToArray() => new[] {_value0, _value1, _value2, _value3, _value4, _value5, _value6, _value7 };
 
     /// <summary>
     /// Create a new list with all values
     /// </summary>
     /// <returns>Array with all values</returns>
-    public List<TValue> ToList() => new(_tracker.Count) {_value0, _value1, _value2, _value3};
+    public List<TValue> ToList() => new(_tracker.Count) {_value0, _value1, _value2, _value3, _value4, _value5, _value6, _value7 };
 
     /// <summary>
     /// Copies the values into the given array without allocating heap memory
@@ -107,6 +123,10 @@ public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
         destinationArray[destinationStartIndex + 1] = _value1;
         destinationArray[destinationStartIndex + 2] = _value2;
         destinationArray[destinationStartIndex + 3] = _value3;
+        destinationArray[destinationStartIndex + 4] = _value4;
+        destinationArray[destinationStartIndex + 5] = _value5;
+        destinationArray[destinationStartIndex + 6] = _value6;
+        destinationArray[destinationStartIndex + 7] = _value7;
     }
 
     /// <summary>
@@ -151,6 +171,34 @@ public struct EnumeratorForFour<TValue> : IEnumerator<TValue>
 
         if (sourceStartIndex <= 3 && count > 0) {
             destinationArray[destinationStartIndex] = _value3;
+            destinationStartIndex += 1;
+            count -= 1;
+        }
+
+        if (sourceStartIndex <= 4 && count > 0)
+        {
+            destinationArray[destinationStartIndex] = _value4;
+            destinationStartIndex += 1;
+            count -= 1;
+        }
+
+        if (sourceStartIndex <= 5 && count > 0)
+        {
+            destinationArray[destinationStartIndex] = _value5;
+            destinationStartIndex += 1;
+            count -= 1;
+        }
+
+        if (sourceStartIndex <= 6 && count > 0)
+        {
+            destinationArray[destinationStartIndex] = _value6;
+            destinationStartIndex += 1;
+            count -= 1;
+        }
+
+        if (sourceStartIndex <= 7 && count > 0)
+        {
+            destinationArray[destinationStartIndex] = _value7;
             //destinationStartIndex += 1;
             //count -= 1;
         }

@@ -56,8 +56,6 @@ public class EndianUInt32Test
         test.MoveNext();
         test.Current.ShouldBe(valueBuffer[0]);
         
-
-
         endianValue.ToArray().ShouldBe(valueBuffer);
         endianValue.ToList().ShouldBe(valueBuffer);
     }
@@ -68,26 +66,24 @@ public class EndianUInt32Test
     public void CopyToBufferSimpleTest(UInt32 value, EndianFormat endianFormat)
     {
         var endianValue = new EndianUInt32(value, endianFormat);
-        var buffer = endianValue.ToArray();
-
         var intoBuffer = new byte[20];
 
-        Array.Fill(intoBuffer, (byte)0xFF);
+        Array.Fill(intoBuffer, (byte)0xEE);
         endianValue.CopyTo(intoBuffer, 0);
         intoBuffer[0].ShouldBe(endianValue[0]);
         intoBuffer[1].ShouldBe(endianValue[1]);
         intoBuffer[2].ShouldBe(endianValue[2]);
         intoBuffer[3].ShouldBe(endianValue[3]);
-        intoBuffer[4].ShouldBe((byte)0xFF);
+        intoBuffer[4].ShouldBe((byte)0xEE);
 
-        Array.Fill(intoBuffer, (byte)0xFF);
+        Array.Fill(intoBuffer, (byte)0xEE);
         endianValue.CopyTo(intoBuffer, 1);
-        intoBuffer[0].ShouldBe((byte)0xFF);
+        intoBuffer[0].ShouldBe((byte)0xEE);
         intoBuffer[1].ShouldBe(endianValue[0]);
         intoBuffer[2].ShouldBe(endianValue[1]);
         intoBuffer[3].ShouldBe(endianValue[2]);
         intoBuffer[4].ShouldBe(endianValue[3]);
-        intoBuffer[5].ShouldBe((byte)0xFF);
+        intoBuffer[5].ShouldBe((byte)0xEE);
     }
 
     [DataTestMethod]
@@ -102,30 +98,30 @@ public class EndianUInt32Test
 
         // Fill from start of both buffers
         //
-        Array.Fill(intoBuffer, (byte)0xFF);
-        endianValue.CopyTo(0,intoBuffer, 0, 4);
+        Array.Fill(intoBuffer, (byte)0xEE);
+        endianValue.CopyTo(0,intoBuffer, 0, sizeof(UInt32));
         intoBuffer[0].ShouldBe(endianValue[0]);
         intoBuffer[1].ShouldBe(endianValue[1]);
         intoBuffer[2].ShouldBe(endianValue[2]);
         intoBuffer[3].ShouldBe(endianValue[3]);
-        intoBuffer[4].ShouldBe((byte)0xFF);
+        intoBuffer[4].ShouldBe((byte)0xEE);
         
         // Fill from start of source buffer but 1 into destination buffer
         //
-        Array.Fill(intoBuffer, (byte)0xFF);
-        endianValue.CopyTo(0, intoBuffer, 1, 4);
-        intoBuffer[0].ShouldBe((byte)0xFF);
+        Array.Fill(intoBuffer, (byte)0xEE);
+        endianValue.CopyTo(0, intoBuffer, 1, sizeof(UInt32));
+        intoBuffer[0].ShouldBe((byte)0xEE);
         intoBuffer[1].ShouldBe(endianValue[0]);
         intoBuffer[2].ShouldBe(endianValue[1]);
         intoBuffer[3].ShouldBe(endianValue[2]);
         intoBuffer[4].ShouldBe(endianValue[3]);
-        intoBuffer[5].ShouldBe((byte)0xFF);
+        intoBuffer[5].ShouldBe((byte)0xEE);
 
         // Fill from start of source buffer, but right at end of destination buffer
         //
-        Array.Fill(intoBuffer, (byte)0xFF);
-        endianValue.CopyTo(0, intoBuffer, 16, 4);
-        intoBuffer[15].ShouldBe((byte)0xFF);
+        Array.Fill(intoBuffer, (byte)0xEE);
+        endianValue.CopyTo(0, intoBuffer, intoBuffer.Length-sizeof(UInt32), sizeof(UInt32));
+        intoBuffer[15].ShouldBe((byte)0xEE);
         intoBuffer[16].ShouldBe(endianValue[0]);
         intoBuffer[17].ShouldBe(endianValue[1]);
         intoBuffer[18].ShouldBe(endianValue[2]);
@@ -133,12 +129,12 @@ public class EndianUInt32Test
 
         // Fill from 1 into the source
         //
-        Array.Fill(intoBuffer, (byte)0xFF);
-        endianValue.CopyTo(1, intoBuffer, 0, 3);
+        Array.Fill(intoBuffer, (byte)0xEE);
+        endianValue.CopyTo(1, intoBuffer, 0, sizeof(UInt32)-1);
         intoBuffer[0].ShouldBe(endianValue[1]);
         intoBuffer[1].ShouldBe(endianValue[2]);
         intoBuffer[2].ShouldBe(endianValue[3]);
-        intoBuffer[3].ShouldBe((byte)0xFF);
+        intoBuffer[3].ShouldBe((byte)0xEE);
     }
 
     [DataTestMethod]
@@ -149,29 +145,29 @@ public class EndianUInt32Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(-1, myBuffer, 1, 4);
+            myEndianValue.CopyTo(-1, myBuffer, 1, sizeof(UInt32));
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, -1, 4);
+            myEndianValue.CopyTo(0, myBuffer, -1, sizeof(UInt32));
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(1, myBuffer, 0, 4);
+            myEndianValue.CopyTo(1, myBuffer, 0, sizeof(UInt32));
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, 17, 4);
+            myEndianValue.CopyTo(0, myBuffer, 17, sizeof(UInt32));
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            var myEndianValue = new EndianUInt32(new byte[3], endianFormat);
+            var myEndianValue = new EndianUInt32(new byte[sizeof(UInt32)-1], endianFormat);
         });
     }
 
@@ -203,19 +199,23 @@ public class EndianUInt32Test
         valueBuffer.AsUInt32(endianFormat).ShouldBe(value);
 
         var buffer = new byte[20];
-        Array.Fill(buffer, (byte)0xFF);
+        Array.Fill(buffer, (byte)0xEE);
         value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(UInt32));
+        buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
         buffer[3].ShouldBe(valueBuffer[2]);
         buffer[4].ShouldBe(valueBuffer[3]);
+        buffer[5].ShouldBe((byte)0xEE);
 
-        Array.Fill(buffer, (byte)0xFF);
+        Array.Fill(buffer, (byte)0xEE);
         value.CopyToBuffer(endianFormat, buffer, 1);
+        buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
         buffer[3].ShouldBe(valueBuffer[2]);
         buffer[4].ShouldBe(valueBuffer[3]);
+        buffer[5].ShouldBe((byte)0xEE);
     }
 
     [TestMethod]

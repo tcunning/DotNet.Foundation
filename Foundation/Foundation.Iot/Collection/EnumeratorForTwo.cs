@@ -16,6 +16,8 @@
 public struct EnumeratorForTwo<TValue> : IEnumerator<TValue>
     where TValue : struct
 {
+    public const int Count = 2;
+
     private EnumeratorTracker _tracker;
 
     private readonly TValue _value0;
@@ -28,7 +30,7 @@ public struct EnumeratorForTwo<TValue> : IEnumerator<TValue>
     /// <param name="value1">The 2nd value to return</param>
     public EnumeratorForTwo(TValue value0, TValue value1)
     {
-        _tracker = new EnumeratorTracker(2);
+        _tracker = new EnumeratorTracker(Count);
         _value0 = value0;
         _value1 = value1;
     }

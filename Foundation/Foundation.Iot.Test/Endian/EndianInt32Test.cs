@@ -62,8 +62,6 @@ public class EndianInt32Test
         test.MoveNext();
         test.Current.ShouldBe(valueBuffer[0]);
         
-
-
         endianValue.ToArray().ShouldBe(valueBuffer);
         endianValue.ToList().ShouldBe(valueBuffer);
     }
@@ -74,8 +72,6 @@ public class EndianInt32Test
     public void CopyToBufferSimpleTest(Int32 value, EndianFormat endianFormat)
     {
         var endianValue = new EndianInt32(value, endianFormat);
-        var buffer = endianValue.ToArray();
-
         var intoBuffer = new byte[20];
 
         Array.Fill(intoBuffer, (byte)0xEE);
@@ -214,17 +210,21 @@ public class EndianInt32Test
         var buffer = new byte[20];
         Array.Fill(buffer, (byte)0xEE);
         value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(Int32));
+        buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
         buffer[3].ShouldBe(valueBuffer[2]);
         buffer[4].ShouldBe(valueBuffer[3]);
+        buffer[5].ShouldBe((byte)0xEE);
 
         Array.Fill(buffer, (byte)0xEE);
         value.CopyToBuffer(endianFormat, buffer, 1);
+        buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
         buffer[3].ShouldBe(valueBuffer[2]);
         buffer[4].ShouldBe(valueBuffer[3]);
+        buffer[5].ShouldBe((byte)0xEE);
     }
 
     [TestMethod]
