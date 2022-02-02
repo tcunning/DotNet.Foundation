@@ -1,4 +1,6 @@
-﻿namespace Foundation.Iot.Collection;
+﻿using Foundation.Iot.BasicType;
+
+namespace Foundation.Iot.Collection;
 
 /// <summary>
 /// <para>
@@ -13,10 +15,10 @@
 /// </para>
 /// </summary>
 /// <typeparam name="TValue">The value type that is being iterated over</typeparam>
-public struct EnumeratorForEight<TValue> : IEnumerator<TValue>
+public struct EnumeratorForEight<TValue> : IEnumerator<TValue>, ITypeSideOf
     where TValue : struct
 {
-    public const int Count = 8;
+    public static int TypeSizeOf => 8;
 
     private EnumeratorTracker _tracker;
 
@@ -42,7 +44,7 @@ public struct EnumeratorForEight<TValue> : IEnumerator<TValue>
     /// <param name="value7">The 8th value to return</param>
     public EnumeratorForEight(TValue value0, TValue value1, TValue value2, TValue value3, TValue value4, TValue value5, TValue value6, TValue value7)
     {
-        _tracker = new EnumeratorTracker(Count);
+        _tracker = new EnumeratorTracker(TypeSizeOf);
         _value0 = value0;
         _value1 = value1;
         _value2 = value2;

@@ -1,4 +1,5 @@
-﻿using Foundation.Iot.Collection;
+﻿using Foundation.Iot.BasicType;
+using Foundation.Iot.Collection;
 
 namespace Foundation.Iot.Endian;
 
@@ -70,7 +71,7 @@ public readonly ref struct EndianUInt48
             if( index >= Count ) 
                 throw new ArgumentOutOfRangeException(nameof(index));
             
-            return (byte) ((Value >> EndianValueManipulationUInt48.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+            return (byte) ((Value >> EndianValueManipulation<UInt64, TypeSizeOfValue6Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
         }
     }
 
@@ -130,7 +131,7 @@ public readonly ref struct EndianUInt48
 
         UInt64 value = 0x00;
         for (var index = 0; index < buffer.Count; index++) {
-            value |= ((UInt64)buffer[index]) << EndianValueManipulationUInt48.BitsToShift(endianFormat, index);
+            value |= ((UInt64)buffer[index]) << EndianValueManipulation<UInt64, TypeSizeOfValue6Bytes>.BitsToShift(endianFormat, index);
         }
 
         return value & UInt48Mask;

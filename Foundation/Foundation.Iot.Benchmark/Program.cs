@@ -6,7 +6,8 @@ using Foundation.Iot.Endian;
 // See https://aka.ms/new-console-template for more information
 
 Console.WriteLine("Foundation.Iot Benchmark");
-//var ok = BenchmarkRunner.Run<BenchmarkRun>();
+var ok = BenchmarkRunner.Run<BenchmarkRun>();
+//var ok = BenchmarkRunner.Run<TypeWithBenchmarks>();
 
 Test1B();
 Test2A();

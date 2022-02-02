@@ -1,4 +1,5 @@
-﻿using Foundation.Iot.Collection;
+﻿using Foundation.Iot.BasicType;
+using Foundation.Iot.Collection;
 
 namespace Foundation.Iot.Endian;
 
@@ -61,7 +62,7 @@ public readonly ref struct EndianInt64
     /// </summary>
     /// <param name="index">The index of the byte to retrieve after taking into account the byte order via <see cref="EndianFormat"/></param>
     /// <returns>The byte at the given index after taking into account the byte order via <see cref="EndianFormat"/></returns>
-    public byte this[int index] => (byte)((Value >> EndianValueManipulation<Int64>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+    public byte this[int index] => (byte)((Value >> EndianValueManipulation<Int64, TypeSizeOfValue<Int64>>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
 
     /// <summary>
     /// <para>
@@ -111,12 +112,12 @@ public readonly ref struct EndianInt64
     /// <param name="endianFormat">The endian format to use when converting from the buffer to the value</param>
     public static Int64 MakeValue(ArraySegment<byte> buffer, EndianFormat endianFormat)
     {
-        if (buffer.Count != EndianValueManipulation<Int64>.NumberOfBytes)
+        if (buffer.Count != EndianValueManipulation<Int64, TypeSizeOfValue<Int64>>.NumberOfBytes)
             throw new ArgumentOutOfRangeException(nameof(buffer), $"Unexpected buffer size");
 
         Int64 value = 0x00;
         for (var index = 0; index < buffer.Count; index++) {
-            value |= ((Int64)buffer[index]) << EndianValueManipulation<Int64>.BitsToShift(endianFormat, index);
+            value |= ((Int64)buffer[index]) << EndianValueManipulation<Int64, TypeSizeOfValue<Int64>>.BitsToShift(endianFormat, index);
         }
 
         return value;

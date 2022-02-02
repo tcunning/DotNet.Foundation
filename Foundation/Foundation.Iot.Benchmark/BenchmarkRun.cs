@@ -1,10 +1,29 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Foundation.Iot.BasicType;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using Foundation.Iot.Endian;
 
+
+[Config(typeof(Config))]
 [MemoryDiagnoser]
 public class BenchmarkRun
 {
+    private class Config : ManualConfig
+    {
+        public Config()
+        {
+            //AddJob(Job.MediumRun
+            //    .WithLaunchCount(1)
+            //    .WithId("OutOfProc"));
+
+            AddJob(Job.MediumRun
+                .WithLaunchCount(1)
+                .WithToolchain(InProcessEmitToolchain.Instance)
+                .WithId("InProcess"));
+        }
+    }
+    
     public BenchmarkRun()
     {
     }

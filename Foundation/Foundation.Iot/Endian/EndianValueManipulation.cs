@@ -6,9 +6,13 @@ namespace Foundation.Iot.Endian;
 /// Used to assist with Endian Value Manipulations. The given <see cref="TValue"/> should be
 /// an integer type such as int, long, UInt16, ...
 /// </summary>
-/// <typeparam name="TValue"></typeparam>
-internal static class EndianValueManipulation<TValue>
+/// <typeparam name="TValue">The type of the value that's being manipulated</typeparam>
+/// <typeparam name="TValueSize">The type size of the value being manipulated, we can use a different size
+/// then the given TValue type so we can use larger types to manipulate smaller types, for example to
+/// manipulate UInt48 (6 byte) types UInt64 (8 byte) types are used.</typeparam>
+internal static class EndianValueManipulation<TValue, TValueSize>
     where TValue : struct, IComparable, IComparable<TValue>, IConvertible, IEquatable<TValue>
+    where TValueSize : ITypeSideOf
 {
     /// <summary>
     /// The index used for the <see cref="BitsToShiftTable"/> to get the bits to shift.
@@ -52,7 +56,7 @@ internal static class EndianValueManipulation<TValue>
     /// </summary>
     static EndianValueManipulation()
     {
-        var count = Unsafe.SizeOf<TValue>();
+        var count = TValueSize.TypeSizeOf;
         BitsToShiftTable = new int[MaxEndianness, count];
         for (int index = 0; index < count; index++)
         {
