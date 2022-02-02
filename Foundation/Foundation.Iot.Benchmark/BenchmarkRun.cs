@@ -13,6 +13,9 @@ using Foundation.Iot.Endian;
 [MemoryDiagnoser]
 public class BenchmarkRun
 {
+    // Because we are currently using a preview feature we configure the Benchmark to use in-process
+    // running.  Without this Benchmark will try to re-compile the code w/o the preview features enabled.
+    //
     private class Config : ManualConfig
     {
         public Config()

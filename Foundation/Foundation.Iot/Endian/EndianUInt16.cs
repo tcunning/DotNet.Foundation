@@ -56,7 +56,7 @@ public readonly ref struct EndianUInt16
     /// </summary>
     /// <param name="index">The index of the byte to retrieve after taking into account the byte order via <see cref="EndianFormat"/></param>
     /// <returns>The byte at the given index after taking into account the byte order via <see cref="EndianFormat"/></returns>
-    public byte this[int index] => (byte)((Value >> EndianValueManipulation<UInt16, TypeSizeOfValue<UInt16>>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+    public byte this[int index] => (byte)((Value >> EndianValueManipulation<UInt16, TypeSizeOfValue2Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
 
     /// <summary>
     /// <para>
@@ -106,12 +106,12 @@ public readonly ref struct EndianUInt16
     /// <param name="endianFormat">The endian format to use when converting from the buffer to the value</param>
     public static UInt16 MakeValue(ArraySegment<byte> buffer, EndianFormat endianFormat)
     {
-        if (buffer.Count != EndianValueManipulation<UInt16, TypeSizeOfValue<UInt16>>.NumberOfBytes)
+        if (buffer.Count != EndianValueManipulation<UInt16, TypeSizeOfValue2Bytes>.NumberOfBytes)
             throw new ArgumentOutOfRangeException(nameof(buffer), $"Unexpected buffer size");
 
         UInt16 value = 0x00;
         for (var index = 0; index < buffer.Count; index++) {
-            value |= (UInt16)(buffer[index] << EndianValueManipulation<UInt16, TypeSizeOfValue<UInt16>>.BitsToShift(endianFormat, index));
+            value |= (UInt16)(buffer[index] << EndianValueManipulation<UInt16, TypeSizeOfValue2Bytes>.BitsToShift(endianFormat, index));
         }
 
         return value;
