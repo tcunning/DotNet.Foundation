@@ -203,7 +203,7 @@ public class EndianInt16Test
     public void EnumeratorBuilderTest()
     {
         Should.Throw<InvalidOperationException>(() => {
-            var builder = new EnumeratorForTwo<Int16>();
+            var builder = new EnumeratorForTwo<byte>();
             builder.CurrentValueForIndex(sizeof(Int16));
         });
     }

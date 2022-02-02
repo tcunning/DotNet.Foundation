@@ -98,8 +98,6 @@ public class EndianInt32Test
     public void CopyToBufferAdvancedTest(Int32 value, EndianFormat endianFormat)
     {
         var endianValue = new EndianInt32(value, endianFormat);
-        var buffer = endianValue.ToArray();
-
         var intoBuffer = new byte[20];
 
         // Fill from start of both buffers
@@ -231,7 +229,7 @@ public class EndianInt32Test
     public void EnumeratorBuilderTest()
     {
         Should.Throw<InvalidOperationException>(() => {
-            var builder = new EnumeratorForFour<Int32>();
+            var builder = new EnumeratorForFour<byte>();
             builder.CurrentValueForIndex(sizeof(Int32));
         });
     }

@@ -114,8 +114,6 @@ public class EndianInt64Test
     public void CopyToBufferAdvancedTest(Int64 value, EndianFormat endianFormat)
     {
         var endianValue = new EndianInt64(value, endianFormat);
-        var buffer = endianValue.ToArray();
-
         var intoBuffer = new byte[20];
 
         // Fill from start of both buffers
@@ -280,7 +278,7 @@ public class EndianInt64Test
     public void EnumeratorBuilderTest()
     {
         Should.Throw<InvalidOperationException>(() => {
-            var builder = new EnumeratorForEight<Int64>();
+            var builder = new EnumeratorForEight<byte>();
             builder.CurrentValueForIndex(sizeof(Int64));
         });
     }
