@@ -4,6 +4,10 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using Foundation.Iot.Endian;
 
+//[InProcessAttribute]
+//public class TypeWithBenchmarks
+//{
+//}
 
 [Config(typeof(Config))]
 [MemoryDiagnoser]
