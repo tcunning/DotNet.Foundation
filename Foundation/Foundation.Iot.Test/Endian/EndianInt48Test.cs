@@ -204,6 +204,7 @@ public class EndianInt48Test
 
     [DataTestMethod]
     [DataRow((Int64)Int64.MaxValue, EndianFormat.Big)]
+    [DataRow((Int64)Int64.MaxValue, EndianFormat.Little)]
     public void ValueConstructionErrorsTest(Int64 value, EndianFormat endianFormat)
     {
         Should.Throw<ArgumentOutOfRangeException>(() => {

@@ -5,10 +5,10 @@ public interface ITypeSideOf
     public static abstract int TypeSizeOf { get; }
 }
 
-public class TypeSizeOfValue<TValue> : ITypeSideOf
-{
-    public static int TypeSizeOf { get; } = Unsafe.SizeOf<TValue>();
-}
+//public class TypeSizeOfValue<TValue> : ITypeSideOf
+//{
+//    public static int TypeSizeOf { get; } = Unsafe.SizeOf<TValue>();
+//}
 
 public class TypeSizeOfValue2Bytes : ITypeSideOf
 {

@@ -201,10 +201,18 @@ public class EndianUInt48Test
     }
 
     [DataTestMethod]
-    [DataRow((UInt64)UInt64.MaxValue, EndianFormat.Big)]
-    [DataRow((UInt64)UInt64.MaxValue, EndianFormat.Little)]
-    [DataRow((UInt64)0x80123456789ABC, EndianFormat.Big)]
-    [DataRow((UInt64)0x80123456789ABC, EndianFormat.Little)]
+    [DataRow(UInt64.MaxValue, EndianFormat.Big)]
+    [DataRow(UInt64.MaxValue, EndianFormat.Little)]
+    public void ValueConstructionErrorsTest(UInt64 value, EndianFormat endianFormat)
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianUInt48(value, endianFormat);
+        });
+    }
+
+    [DataTestMethod]
+    [DataRow((UInt64)0x123456789ABC, EndianFormat.Big)]
+    [DataRow((UInt64)0x123456789ABC, EndianFormat.Little)]
     public void IndexErrorsTest(UInt64 value, EndianFormat endianFormat)
     {
         Should.Throw<ArgumentOutOfRangeException>(() => {

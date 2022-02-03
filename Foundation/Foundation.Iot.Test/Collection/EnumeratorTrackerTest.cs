@@ -25,12 +25,11 @@ public class EnumeratorTrackerTest
     }
 
     [TestMethod]
-    public void TrackerTest()
+    public void TrackerErrorTest()
     {
         Should.Throw<ArgumentOutOfRangeException>(() =>
         {
             _ = new EnumeratorTracker(EnumeratorTracker.EnumerationNotStarted);
         });
     }
-
 }
