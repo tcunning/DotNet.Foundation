@@ -42,7 +42,7 @@ public readonly ref struct EndianUInt48
     public UInt64 Value { get; }
 
     /// <summary>
-    /// The size of the native value used to determine how many bytes are used by the native <see cref="Value"/>.
+    /// The size of the native value used to determine how many bytes are used <see cref="Value"/>.
     /// </summary>
     public int Count => Size;
 
@@ -68,7 +68,7 @@ public readonly ref struct EndianUInt48
     {
         get
         {
-            if( index >= Count ) 
+            if (index >= Count || index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index));
             
             return (byte) ((Value >> EndianValueManipulation<UInt64, TypeSizeOfValue6Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);

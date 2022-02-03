@@ -180,7 +180,22 @@ public class EndianUInt48Test
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            var myEndianValue = new EndianUInt48(new byte[EndianUInt48.Size - 1], endianFormat);
+            _ = new EndianUInt48(new byte[EndianUInt48.Size - 1], endianFormat);
+        });
+
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianUInt48(value, endianFormat);
+            _ = myEndianValue[EndianUInt48.Size];
+        });
+
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianUInt48(value, endianFormat);
+            _ = myEndianValue[EndianUInt48.Size];
+        });
+
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianUInt48(value, endianFormat);
+            _ = myEndianValue[-1];
         });
     }
 

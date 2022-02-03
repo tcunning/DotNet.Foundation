@@ -159,8 +159,13 @@ public class EndianInt16Test
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            var myEndianValue = new EndianInt48(value, endianFormat);
-            _ = myEndianValue[EndianInt48.Size];
+            var myEndianValue = new EndianInt16(value, endianFormat);
+            _ = myEndianValue[EndianInt16.Size];
+        });
+
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianInt16(value, endianFormat);
+            _ = myEndianValue[-1];
         });
     }
 

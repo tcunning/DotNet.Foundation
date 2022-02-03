@@ -40,7 +40,7 @@ public readonly ref struct EndianInt64
     public Int64 Value { get; }
 
     /// <summary>
-    /// The size of the native value used to determine how many bytes are used by the native <see cref="Value"/>.
+    /// The size of the native value used to determine how many bytes are used <see cref="Value"/>.
     /// </summary>
     public int Count => Size;
 
@@ -64,7 +64,16 @@ public readonly ref struct EndianInt64
     /// </summary>
     /// <param name="index">The index of the byte to retrieve after taking into account the byte order via <see cref="EndianFormat"/></param>
     /// <returns>The byte at the given index after taking into account the byte order via <see cref="EndianFormat"/></returns>
-    public byte this[int index] => (byte)((Value >> EndianValueManipulation<Int64, TypeSizeOfValue8Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+    public byte this[int index]
+    {
+        get
+        {
+            if (index >= Count || index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            return (byte) ((Value >> EndianValueManipulation<Int64, TypeSizeOfValue8Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+        }
+    }
 
     /// <summary>
     /// <para>
