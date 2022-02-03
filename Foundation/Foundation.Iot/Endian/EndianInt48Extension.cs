@@ -20,7 +20,7 @@ public static class EndianInt48Extension
     /// <param name="endianFormat">The endian format that should be used when going to/from memory</param>
     /// <returns>The <see cref="EndianInt48"/> that can format the value as the given <see cref="EndianFormat"/></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static EndianInt48 AsEndianInt48(this UInt64 value, EndianFormat endianFormat) =>
+    public static EndianInt48 AsEndianInt48(this Int64 value, EndianFormat endianFormat) =>
         new (value, endianFormat);
 
     /// <summary>
@@ -75,7 +75,7 @@ public static class EndianInt48Extension
     /// <returns>The <see cref="EndianInt48"/> that reads the given buffer that is in <see cref="EndianFormat"/> starting
     /// at the given <see cref="startIndex"/></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static UInt64 AsInt48(this byte[] buffer, EndianFormat endianFormat, int startIndex = 0) =>
+    public static Int64 AsInt48(this byte[] buffer, EndianFormat endianFormat, int startIndex = 0) =>
         AsEndianInt48(buffer, endianFormat, startIndex).Value;
 
     /// <summary>
@@ -96,7 +96,7 @@ public static class EndianInt48Extension
     /// <param name="count">From 0 to the size of the <see cref="Value"/> but can't exceed the source buffer size while also taking
     /// into account the <see cref="sourceStartIndex"/></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void CopyToBufferInt48(this UInt64 value, EndianFormat endianFormat, int sourceStartIndex, byte[] destinationArray, int destinationStartIndex, int count) =>
+    public static void CopyToBufferInt48(this Int64 value, EndianFormat endianFormat, int sourceStartIndex, byte[] destinationArray, int destinationStartIndex, int count) =>
         AsEndianInt48(value, endianFormat).CopyTo(sourceStartIndex, destinationArray, destinationStartIndex, count);
 
     /// <summary>
@@ -114,6 +114,6 @@ public static class EndianInt48Extension
     /// <param name="destinationArray">The array to copy the value into after taking into account the <see cref="EndianFormat"/></param>
     /// <param name="destinationStartIndex">Index in the destination buffer were the copy should be started</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void CopyToBufferInt48(this UInt64 value, EndianFormat endianFormat, byte[] destinationArray, int destinationStartIndex = 0) =>
+    public static void CopyToBufferInt48(this Int64 value, EndianFormat endianFormat, byte[] destinationArray, int destinationStartIndex = 0) =>
         AsEndianInt48(value, endianFormat).CopyTo(destinationArray, destinationStartIndex);
 }

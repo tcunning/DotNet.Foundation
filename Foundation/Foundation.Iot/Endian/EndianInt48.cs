@@ -27,7 +27,8 @@ namespace Foundation.Iot.Endian;
 /// </summary>
 public readonly ref struct EndianInt48
 {
-    public const UInt64 Int48Mask = 0x0000FFFF_FFFFFFFF;
+    public const UInt64 NegativeBit = 0x00008000_00000000; 
+    public const UInt64 SignExtendMask = 0xFFFF0000_00000000;
     public const int Size = 6;
 
     /// <summary>
@@ -37,9 +38,9 @@ public readonly ref struct EndianInt48
 
     /// <summary>
     /// Get's the value taking into account the <see cref="EndianFormat"/> when converting to/from a memory buffer.
-    /// We use a UInt64 to hold the 48 bit number so we have a single native type to hold it.
+    /// We use a Int64 to hold the 48 bit number so we have a single native type to hold it.
     /// </summary>
-    public UInt64 Value { get; }
+    public Int64 Value { get; }
 
     /// <summary>
     /// The size of the native value used to determine how many bytes are used by the native <see cref="Value"/>.
@@ -71,7 +72,7 @@ public readonly ref struct EndianInt48
             if( index >= Count ) 
                 throw new ArgumentOutOfRangeException(nameof(index));
             
-            return (byte) ((Value >> EndianValueManipulation<UInt64, TypeSizeOfValue6Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
+            return (byte) ((Value >> EndianValueManipulation<Int64, TypeSizeOfValue6Bytes>.BitsToShift(EndianFormat, index)) & Byte.MaxValue);
         }
     }
 
@@ -86,13 +87,14 @@ public readonly ref struct EndianInt48
     /// </summary>
     /// <param name="value">The value in its native format</param>
     /// <param name="endianFormat">The endian format to use when converting to/from memory</param>
-    public EndianInt48(UInt64 value, EndianFormat endianFormat)
+    public EndianInt48(Int64 value, EndianFormat endianFormat)
     {
-        if( value > Int48Mask )
+        var unsignedValueOverflow = (UInt64)value & SignExtendMask;
+        if (unsignedValueOverflow != 0 && unsignedValueOverflow != SignExtendMask)
             throw new ArgumentOutOfRangeException(nameof(value));
-
+        
         EndianFormat = endianFormat;
-        Value = value & Int48Mask;
+        Value = value;
     }
 
     /// <summary>
@@ -124,7 +126,7 @@ public readonly ref struct EndianInt48
     /// returned value.  Anything that can be converted into an ArraySegment can also be used such as a byte array, but
     /// it too must exactly match the expected numbers of bytes.</param>
     /// <param name="endianFormat">The endian format to use when converting from the buffer to the value</param>
-    public static UInt64 MakeValue(ArraySegment<byte> buffer, EndianFormat endianFormat)
+    public static Int64 MakeValue(ArraySegment<byte> buffer, EndianFormat endianFormat)
     {
         if (buffer.Count != Size)
             throw new ArgumentOutOfRangeException(nameof(buffer), $"Unexpected buffer size");
@@ -133,8 +135,11 @@ public readonly ref struct EndianInt48
         for (var index = 0; index < buffer.Count; index++) {
             value |= ((UInt64)buffer[index]) << EndianValueManipulation<UInt64, TypeSizeOfValue6Bytes>.BitsToShift(endianFormat, index);
         }
+        
+        if ((value & NegativeBit) != 0)
+            value |= SignExtendMask;
 
-        return value & Int48Mask;
+        return (Int64)value;
     }
 
     /// <summary>

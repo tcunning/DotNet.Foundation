@@ -17,7 +17,7 @@ public class EndianInt16Test
     {
         var endianValue = new EndianInt16(value, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(Int16));
+        endianValue.Count.ShouldBe(EndianInt16.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -41,7 +41,7 @@ public class EndianInt16Test
     {
         var endianValue = new EndianInt16(valueBuffer, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(Int16));
+        endianValue.Count.ShouldBe(EndianInt16.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -133,7 +133,7 @@ public class EndianInt16Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(-1, myBuffer, 1, 2);
+            myEndianValue.CopyTo(-1, myBuffer, 1, EndianInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
@@ -157,6 +157,11 @@ public class EndianInt16Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(new byte[3], endianFormat);
         });
+
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            var myEndianValue = new EndianInt48(value, endianFormat);
+            _ = myEndianValue[EndianInt48.Size];
+        });
     }
 
     [DataTestMethod]
@@ -168,7 +173,7 @@ public class EndianInt16Test
     public void FromValueExtensionTest(Int16 value, EndianFormat endianFormat, byte[] valueBuffer)
     {
         var endianValue = value.AsEndianInt16(endianFormat);
-        endianValue.Count.ShouldBe(sizeof(Int16));
+        endianValue.Count.ShouldBe(EndianInt16.Size);
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
         endianValue[1].ShouldBe(valueBuffer[1]);
@@ -185,7 +190,7 @@ public class EndianInt16Test
 
         var buffer = new byte[20];
         Array.Fill(buffer, (byte)0xEE);
-        value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(Int16));
+        value.CopyToBuffer(endianFormat, 0, buffer, 1, EndianInt16.Size);
         buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
@@ -204,7 +209,7 @@ public class EndianInt16Test
     {
         Should.Throw<InvalidOperationException>(() => {
             var builder = new EnumeratorForTwo<byte>();
-            builder.CurrentValueForIndex(sizeof(Int16));
+            builder.CurrentValueForIndex(EndianInt16.Size);
         });
     }
 

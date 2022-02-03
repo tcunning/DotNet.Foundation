@@ -27,6 +27,8 @@ namespace Foundation.Iot.Endian;
 /// </summary>
 public readonly ref struct EndianUInt32 
 {
+    public const int Size = 4;
+
     /// <summary>
     /// Gets the <see cref="EndianFormat"/> being used to do the conversation.
     /// </summary>
@@ -40,7 +42,7 @@ public readonly ref struct EndianUInt32
     /// <summary>
     /// The size of the native value used to determine how many bytes are used by the native <see cref="Value"/>.
     /// </summary>
-    public int Count => sizeof(UInt32);
+    public int Count => Size;
 
     /// <summary>
     /// <para>

@@ -14,7 +14,7 @@ public class EndianUInt16Test
     {
         var endianValue = new EndianUInt16(value, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(UInt16));
+        endianValue.Count.ShouldBe(EndianUInt16.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -35,7 +35,7 @@ public class EndianUInt16Test
     {
         var endianValue = new EndianUInt16(valueBuffer, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(UInt16));
+        endianValue.Count.ShouldBe(EndianUInt16.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -159,7 +159,7 @@ public class EndianUInt16Test
     public void FromValueExtensionTest(UInt16 value, EndianFormat endianFormat, byte[] valueBuffer)
     {
         var endianValue = value.AsEndianUInt16(endianFormat);
-        endianValue.Count.ShouldBe(sizeof(UInt16));
+        endianValue.Count.ShouldBe(EndianUInt16.Size);
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
         endianValue[1].ShouldBe(valueBuffer[1]);
@@ -176,7 +176,7 @@ public class EndianUInt16Test
 
         var buffer = new byte[20];
         Array.Fill(buffer, (byte)0xEE);
-        value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(UInt16));
+        value.CopyToBuffer(endianFormat, 0, buffer, 1, EndianUInt16.Size);
         buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
@@ -195,7 +195,7 @@ public class EndianUInt16Test
     {
         Should.Throw<InvalidOperationException>(() => {
             var builder = new EnumeratorForTwo<byte>();
-            builder.CurrentValueForIndex(sizeof(UInt16));
+            builder.CurrentValueForIndex(EndianUInt16.Size);
         });
     }
 

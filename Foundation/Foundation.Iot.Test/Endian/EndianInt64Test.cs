@@ -17,7 +17,7 @@ public class EndianInt64Test
     {
         var endianValue = new EndianInt64(value, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(Int64));
+        endianValue.Count.ShouldBe(EndianInt64.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -47,7 +47,7 @@ public class EndianInt64Test
     {
         var endianValue = new EndianInt64(valueBuffer, endianFormat);
 
-        endianValue.Count.ShouldBe(sizeof(Int64));
+        endianValue.Count.ShouldBe(EndianInt64.Size);
 
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
@@ -119,7 +119,7 @@ public class EndianInt64Test
         // Fill from start of both buffers
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0,intoBuffer, 0, sizeof(Int64));
+        endianValue.CopyTo(0,intoBuffer, 0, EndianInt64.Size);
         intoBuffer[0].ShouldBe(endianValue[0]);
         intoBuffer[1].ShouldBe(endianValue[1]);
         intoBuffer[2].ShouldBe(endianValue[2]);
@@ -133,7 +133,7 @@ public class EndianInt64Test
         // Fill from start of source buffer but 1 into destination buffer
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0, intoBuffer, 1, sizeof(Int64));
+        endianValue.CopyTo(0, intoBuffer, 1, EndianInt64.Size);
         intoBuffer[0].ShouldBe((byte)0xEE);
         intoBuffer[1].ShouldBe(endianValue[0]);
         intoBuffer[2].ShouldBe(endianValue[1]);
@@ -148,7 +148,7 @@ public class EndianInt64Test
         // Fill from start of source buffer, but right at end of destination buffer
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0, intoBuffer, intoBuffer.Length-sizeof(Int64), sizeof(Int64));
+        endianValue.CopyTo(0, intoBuffer, intoBuffer.Length- EndianInt64.Size, EndianInt64.Size);
         intoBuffer[11].ShouldBe((byte)0xEE);
         intoBuffer[12].ShouldBe(endianValue[0]);
         intoBuffer[13].ShouldBe(endianValue[1]);
@@ -162,7 +162,7 @@ public class EndianInt64Test
         // Fill from 1 into the source
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(1, intoBuffer, 0, sizeof(Int64)-4);
+        endianValue.CopyTo(1, intoBuffer, 0, EndianInt64.Size - 4);
         intoBuffer[0].ShouldBe(endianValue[1]);
         intoBuffer[1].ShouldBe(endianValue[2]);
         intoBuffer[2].ShouldBe(endianValue[3]);
@@ -178,29 +178,29 @@ public class EndianInt64Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt64(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(-1, myBuffer, 1, sizeof(Int64));
+            myEndianValue.CopyTo(-1, myBuffer, 1, EndianInt64.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt64(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, -1, sizeof(Int64));
+            myEndianValue.CopyTo(0, myBuffer, -1, EndianInt64.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt64(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(1, myBuffer, 0, sizeof(Int64));
+            myEndianValue.CopyTo(1, myBuffer, 0, EndianInt64.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt64(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, 17, sizeof(Int64));
+            myEndianValue.CopyTo(0, myBuffer, 17, EndianInt64.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            var myEndianValue = new EndianInt64(new byte[sizeof(Int64)-1], endianFormat);
+            var myEndianValue = new EndianInt64(new byte[EndianInt64.Size - 1], endianFormat);
         });
     }
 
@@ -213,7 +213,7 @@ public class EndianInt64Test
     public void FromExtensionTest(Int64 value, EndianFormat endianFormat, byte[] valueBuffer)
     {
         var endianValue = value.AsEndianInt64(endianFormat);
-        endianValue.Count.ShouldBe(sizeof(Int64));
+        endianValue.Count.ShouldBe(EndianInt64.Size);
         endianValue.Value.ShouldBe(value);
         endianValue[0].ShouldBe(valueBuffer[0]);
         endianValue[1].ShouldBe(valueBuffer[1]);
@@ -234,7 +234,7 @@ public class EndianInt64Test
         endianBuffer[6].ShouldBe(valueBuffer[6]);
         endianBuffer[7].ShouldBe(valueBuffer[7]);
 
-        endianBuffer = (new ArraySegment<byte>(valueBuffer, 0, sizeof(Int64))).AsEndianInt64(endianFormat);
+        endianBuffer = (new ArraySegment<byte>(valueBuffer, 0, EndianInt64.Size)).AsEndianInt64(endianFormat);
         endianBuffer[0].ShouldBe(valueBuffer[0]);
         endianBuffer[1].ShouldBe(valueBuffer[1]);
         endianBuffer[2].ShouldBe(valueBuffer[2]);
@@ -248,7 +248,7 @@ public class EndianInt64Test
 
         var buffer = new byte[20];
         Array.Fill(buffer, (byte)0xEE);
-        value.CopyToBuffer(endianFormat, 0, buffer, 1, sizeof(Int64));
+        value.CopyToBuffer(endianFormat, 0, buffer, 1, EndianInt64.Size);
         buffer[0].ShouldBe((byte)0xEE);
         buffer[1].ShouldBe(valueBuffer[0]);
         buffer[2].ShouldBe(valueBuffer[1]);
@@ -279,7 +279,7 @@ public class EndianInt64Test
     {
         Should.Throw<InvalidOperationException>(() => {
             var builder = new EnumeratorForEight<byte>();
-            builder.CurrentValueForIndex(sizeof(Int64));
+            builder.CurrentValueForIndex(EndianInt64.Size);
         });
     }
 }
