@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foundation.Iot", "Foundatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foundation.Iot.Test", "Foundation.Iot.Test\Foundation.Iot.Test.csproj", "{2110D018-A774-4D00-B579-562600760703}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foundation.Iot.Benchmark", "Foundation.Iot.Benchmark\Foundation.Iot.Benchmark.csproj", "{D1548338-B0EB-4734-8244-25BDFB59032B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2110D018-A774-4D00-B579-562600760703}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2110D018-A774-4D00-B579-562600760703}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2110D018-A774-4D00-B579-562600760703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1548338-B0EB-4734-8244-25BDFB59032B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1548338-B0EB-4734-8244-25BDFB59032B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1548338-B0EB-4734-8244-25BDFB59032B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1548338-B0EB-4734-8244-25BDFB59032B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

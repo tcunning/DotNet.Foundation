@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Foundation.Iot.Time;
 
 namespace Foundation.Iot.Test;
 
 [TestClass]
+[ExcludeFromCodeCoverage]
 public class FreeRunningTimerTests
 {
     [TestMethod]
