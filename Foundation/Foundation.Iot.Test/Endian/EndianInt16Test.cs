@@ -139,25 +139,43 @@ public class EndianInt16Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, -1, 2);
+            myEndianValue.CopyTo(0, myBuffer, -1, EndianInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(1, myBuffer, 0, 2);
+            myEndianValue.CopyTo(1, myBuffer, 0, EndianInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, 19, 2);
+            myEndianValue.CopyTo(0, myBuffer, 19, EndianInt16.Size);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow(EndianInt16.Size + 1, EndianFormat.Big)]
+    [DataRow(EndianInt16.Size + 1, EndianFormat.Little)]
+    [DataRow(EndianInt16.Size - 1, EndianFormat.Big)]
+    [DataRow(EndianInt16.Size - 1, EndianFormat.Little)]
+    [DataRow(0, EndianFormat.Big)]
+    [DataRow(0, EndianFormat.Little)]
+    [DataRow(1, EndianFormat.Big)]
+    [DataRow(1, EndianFormat.Little)]
+    public void ByteConstructionErrorsTest(int size, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            var myEndianValue = new EndianInt16(new byte[3], endianFormat);
+            _ = new EndianInt16(new byte[size], endianFormat);
         });
-
+    }
+    
+    [DataTestMethod]
+    [DataRow((Int16) 0x1234, EndianFormat.Big)]
+    [DataRow((Int16) 0x1234, EndianFormat.Little)]
+    public void IndexErrorsTest(Int16 value, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt16(value, endianFormat);
             _ = myEndianValue[EndianInt16.Size];

@@ -89,7 +89,7 @@ public class EndianUInt16Test
         // Fill from start of both buffers
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0,intoBuffer, 0, 2);
+        endianValue.CopyTo(0,intoBuffer, 0, EndianUInt16.Size);
         intoBuffer[0].ShouldBe(endianValue[0]);
         intoBuffer[1].ShouldBe(endianValue[1]);
         intoBuffer[2].ShouldBe((byte)0xEE);
@@ -97,7 +97,7 @@ public class EndianUInt16Test
         // Fill from start of source buffer but 1 into destination buffer
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0, intoBuffer, 1, 2);
+        endianValue.CopyTo(0, intoBuffer, 1, EndianUInt16.Size);
         intoBuffer[0].ShouldBe((byte)0xEE);
         intoBuffer[1].ShouldBe(endianValue[0]);
         intoBuffer[2].ShouldBe(endianValue[1]);
@@ -106,7 +106,7 @@ public class EndianUInt16Test
         // Fill from start of source buffer, but right at end of destination buffer
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(0, intoBuffer, 18, 2);
+        endianValue.CopyTo(0, intoBuffer, 18, EndianUInt16.Size);
         intoBuffer[17].ShouldBe((byte)0xEE);
         intoBuffer[18].ShouldBe(endianValue[0]);
         intoBuffer[19].ShouldBe(endianValue[1]);
@@ -114,7 +114,7 @@ public class EndianUInt16Test
         // Fill from 1 into the source
         //
         Array.Fill(intoBuffer, (byte)0xEE);
-        endianValue.CopyTo(1, intoBuffer, 0, 1);
+        endianValue.CopyTo(1, intoBuffer, 0, EndianUInt16.Size-1);
         intoBuffer[0].ShouldBe(endianValue[1]);
         intoBuffer[1].ShouldBe((byte)0xEE);
     }
@@ -127,31 +127,49 @@ public class EndianUInt16Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(-1, myBuffer, 1, 2);
+            myEndianValue.CopyTo(-1, myBuffer, 1, EndianUInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, -1, 2);
+            myEndianValue.CopyTo(0, myBuffer, -1, EndianUInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(1, myBuffer, 0, 2);
+            myEndianValue.CopyTo(1, myBuffer, 0, EndianUInt16.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt16(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, 19, 2);
+            myEndianValue.CopyTo(0, myBuffer, 19, EndianUInt16.Size);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow(EndianUInt16.Size + 1, EndianFormat.Big)]
+    [DataRow(EndianUInt16.Size + 1, EndianFormat.Little)]
+    [DataRow(EndianUInt16.Size - 1, EndianFormat.Big)]
+    [DataRow(EndianUInt16.Size - 1, EndianFormat.Little)]
+    [DataRow(0, EndianFormat.Big)]
+    [DataRow(0, EndianFormat.Little)]
+    [DataRow(1, EndianFormat.Big)]
+    [DataRow(1, EndianFormat.Little)]
+    public void ByteConstructionErrorsTest(int size, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            _ = new EndianUInt16(new byte[3], endianFormat);
+            _ = new EndianUInt16(new byte[size], endianFormat);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow((UInt16) 0x1234, EndianFormat.Big)]
+    [DataRow((UInt16) 0x1234, EndianFormat.Little)]
+    public void IndexErrorsTest(UInt16 value, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt16(value, endianFormat);
             _ = myEndianValue[EndianUInt16.Size];

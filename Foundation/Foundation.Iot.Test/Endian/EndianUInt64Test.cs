@@ -192,11 +192,29 @@ public class EndianUInt64Test
             var myBuffer = new byte[20];
             myEndianValue.CopyTo(0, myBuffer, 17, EndianUInt64.Size);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow(EndianUInt64.Size + 1, EndianFormat.Big)]
+    [DataRow(EndianUInt64.Size + 1, EndianFormat.Little)]
+    [DataRow(EndianUInt64.Size - 1, EndianFormat.Big)]
+    [DataRow(EndianUInt64.Size - 1, EndianFormat.Little)]
+    [DataRow(0, EndianFormat.Big)]
+    [DataRow(0, EndianFormat.Little)]
+    [DataRow(1, EndianFormat.Big)]
+    [DataRow(1, EndianFormat.Little)]
+    public void ByteConstructionErrorsTest(int size, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            _ = new EndianUInt64(new byte[EndianUInt64.Size-1], endianFormat);
+            _ = new EndianUInt64(new byte[size], endianFormat);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow((UInt64) 0x123456789ABCDEF0, EndianFormat.Big)]
+    [DataRow((UInt64) 0x123456789ABCDEF0, EndianFormat.Little)]
+    public void IndexErrorsTest(UInt64 value, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianUInt64(value, endianFormat);
             _ = myEndianValue[EndianUInt64.Size];

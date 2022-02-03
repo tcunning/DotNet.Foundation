@@ -202,7 +202,29 @@ public class EndianInt64Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             _ = new EndianInt64(new byte[EndianInt64.Size - 1], endianFormat);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow(EndianInt64.Size + 1, EndianFormat.Big)]
+    [DataRow(EndianInt64.Size + 1, EndianFormat.Little)]
+    [DataRow(EndianInt64.Size - 1, EndianFormat.Big)]
+    [DataRow(EndianInt64.Size - 1, EndianFormat.Little)]
+    [DataRow(0, EndianFormat.Big)]
+    [DataRow(0, EndianFormat.Little)]
+    [DataRow(1, EndianFormat.Big)]
+    [DataRow(1, EndianFormat.Little)]
+    public void ByteConstructionErrorsTest(int size, EndianFormat endianFormat)
+    {
+        Should.Throw<ArgumentOutOfRangeException>(() => {
+            _ = new EndianInt64(new byte[size], endianFormat);
+        });
+    }
+
+    [DataTestMethod]
+    [DataRow((Int64) 0x123456789ABCDEF0, EndianFormat.Big)]
+    [DataRow((Int64) 0x123456789ABCDEF0, EndianFormat.Little)]
+    public void IndexErrorsTest(Int64 value, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt64(value, endianFormat);
             _ = myEndianValue[EndianInt64.Size];

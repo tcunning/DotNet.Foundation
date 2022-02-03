@@ -149,31 +149,49 @@ public class EndianInt32Test
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(-1, myBuffer, 1, 4);
+            myEndianValue.CopyTo(-1, myBuffer, 1, EndianInt32.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, -1, 4);
+            myEndianValue.CopyTo(0, myBuffer, -1, EndianInt32.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(1, myBuffer, 0, 4);
+            myEndianValue.CopyTo(1, myBuffer, 0, EndianInt32.Size);
         });
 
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt32(value, endianFormat);
             var myBuffer = new byte[20];
-            myEndianValue.CopyTo(0, myBuffer, 17, 4);
+            myEndianValue.CopyTo(0, myBuffer, 17, EndianInt32.Size);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow(EndianInt32.Size + 1, EndianFormat.Big)]
+    [DataRow(EndianInt32.Size + 1, EndianFormat.Little)]
+    [DataRow(EndianInt32.Size - 1, EndianFormat.Big)]
+    [DataRow(EndianInt32.Size - 1, EndianFormat.Little)]
+    [DataRow(0, EndianFormat.Big)]
+    [DataRow(0, EndianFormat.Little)]
+    [DataRow(1, EndianFormat.Big)]
+    [DataRow(1, EndianFormat.Little)]
+    public void ByteConstructionErrorsTest(int size, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
-            _ = new EndianInt32(new byte[3], endianFormat);
+            _ = new EndianInt32(new byte[size], endianFormat);
         });
+    }
 
+    [DataTestMethod]
+    [DataRow((Int32) 0x12345678, EndianFormat.Big)]
+    [DataRow((Int32) 0x12345678, EndianFormat.Little)]
+    public void IndexErrorsTest(Int32 value, EndianFormat endianFormat)
+    {
         Should.Throw<ArgumentOutOfRangeException>(() => {
             var myEndianValue = new EndianInt32(value, endianFormat);
             _ = myEndianValue[EndianInt32.Size];
@@ -184,6 +202,7 @@ public class EndianInt32Test
             _ = myEndianValue[-1];
         });
     }
+
 
     [DataTestMethod]
     [DataRow((Int32)0x12345678, EndianFormat.Big, new byte[] { 0x12, 0x34, 0x56, 0x78 })]
