@@ -6,14 +6,18 @@ using Foundation.Iot.Endian;
 
 // See https://aka.ms/new-console-template for more information
 
-var endianTest1 = new Endian<UInt16>(0x1234);
-endianTest1.Test2();
+var endianTest1 = new Endian<UInt16>(0x1234, EndianFormat.Big);
+Console.WriteLine($"Value = {endianTest1.ToString()}");
 
-var endianTest2 = new Endian<UInt32>(0x12345678);
-endianTest2.Test2();
+var endianTest2 = new Endian<UInt16>(0x1234, EndianFormat.Little);
+Console.WriteLine($"Value = {endianTest2.ToString()}");
 
-var endianTest3 = new Endian<UInt64>(0x123456789ABCDEF0);
-endianTest3.Test2();
+var endianTest3 = new Endian<UInt32>(0x12345678, EndianFormat.Big);
+Console.WriteLine($"Value = {endianTest3.ToString()}");
+
+var endianTest4 = new Endian<UInt32>(0x12345678, EndianFormat.Little);
+Console.WriteLine($"Value = {endianTest4.ToString()}");
+
 
 
 Console.WriteLine("Foundation.Iot Benchmark");
