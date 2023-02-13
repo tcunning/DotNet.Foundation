@@ -1,9 +1,20 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Numerics;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Foundation.Iot.BasicType;
 using Foundation.Iot.Endian;
 
 // See https://aka.ms/new-console-template for more information
+
+var endianTest1 = new Endian<UInt16>(0x1234);
+endianTest1.Test2();
+
+var endianTest2 = new Endian<UInt32>(0x12345678);
+endianTest2.Test2();
+
+var endianTest3 = new Endian<UInt64>(0x123456789ABCDEF0);
+endianTest3.Test2();
+
 
 Console.WriteLine("Foundation.Iot Benchmark");
 var ok = BenchmarkRunner.Run<BenchmarkRun>();
