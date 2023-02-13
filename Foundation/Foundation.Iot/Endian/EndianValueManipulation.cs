@@ -1,4 +1,5 @@
-﻿using Foundation.Iot.BasicType;
+﻿using System.Runtime.Versioning;
+using Foundation.Iot.BasicType;
 
 namespace Foundation.Iot.Endian;
 
@@ -54,6 +55,7 @@ internal static class EndianValueManipulation<TValue, TValueSize>
     /// <summary>
     /// This sets up the <see cref="BitsToShiftTable"/> table with the proper values.
     /// </summary>
+    [RequiresPreviewFeatures]
     static EndianValueManipulation()
     {
         var count = TValueSize.TypeSizeOf;

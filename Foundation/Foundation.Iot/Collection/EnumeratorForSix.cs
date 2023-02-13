@@ -1,4 +1,5 @@
 ﻿using Foundation.Iot.BasicType;
+using System.Runtime.Versioning;
 
 namespace Foundation.Iot.Collection;
 
@@ -18,6 +19,7 @@ namespace Foundation.Iot.Collection;
 public struct EnumeratorForSix<TValue> : IEnumerator<TValue>, ITypeSideOf
     where TValue : struct
 {
+    [RequiresPreviewFeatures]
     public static int TypeSizeOf => 6;
 
     private EnumeratorTracker _tracker;
